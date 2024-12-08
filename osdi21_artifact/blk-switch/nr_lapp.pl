@@ -7,9 +7,9 @@ if ($argc < 5) {exit;}
 # Script parameters
 ####################################
 $nvme_dev = $ARGV[0];
-$total_nr_cpus = 24;
-$nr_cpus = 6;
-$cpus = "0,4,8,12,16,20";
+$total_nr_cpus = 16;
+$nr_cpus = 16;
+$cpus = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15";
 $runtime = 60;
 $runtime_cpu = $runtime - 2;
 $runtime_total = $runtime + 5;
