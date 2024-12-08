@@ -28,10 +28,25 @@ This section covers how to run experiments with the blk-switch kernel.
 The detailed instructions to reproduce all individual results presented in our OSDI21 paper is provided in the "[osdi21_artifact](https://github.com/resource-disaggregation/blk-switch/tree/master/osdi21_artifact)" directory.
 
 ## 2. Build blk-switch Kernel (with root)
-blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. Building the blk-switch kernel should be done on both Host and Target servers.
+blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. Building the blk-switch kernel should be done on both Host and Target servers. 
+
+1. Install the required packages using the command
+```bash
+    sudo apt-get install bc fio libncurses-dev gawk flex bison openssl libssl-dev dkms dwarves  \
+                  libelf-dev libudev-dev libpci-dev libiberty-dev autoconf sysstat iperf
+```
+
+2. Install NVME Utility in Ubuntu 16.04
+```bash
+cd ~ 
+wget http://security.ubuntu.com/ubuntu/pool/universe/n/nvme-cli/nvme-cli_1.9-1_amd64.deb
+sudo apt install ./nvme-cli_1.9-1_amd64.deb
+
+```
+
 
 **(Don't forget to be root)**
-1. Download Linux kernel source tree:
+3. Download Linux kernel source tree:
    ```
    sudo -s
    cd ~
@@ -43,9 +58,9 @@ blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. 
 
    ```
    git clone https://github.com/resource-disaggregation/blk-switch.git
-   cd blk-switch
-   cp -rf block drivers include ~/linux-5.4.43/
+   cd nblks
    cd ~/linux-5.4.43/
+   git apply ../nblks/kernel.patch
    ```
 
 3. Update kernel configuration:
@@ -82,16 +97,16 @@ blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. 
 
    ```
    (See NOTE below for '-j24')
-   make -j24 bzImage
-   make -j24 modules
+   make -j16 bzImage
+   make -j16 modules
    make modules_install
    make install
    ```
-   NOTE: The number 24 means the number of threads created for compilation. Set it to be the total number of cores of your system to reduce the compilation time. Type "lscpu | grep 'CPU(s)'" to see the total number of cores:
+   NOTE: The number 16 means the number of threads created for compilation. Set it to be the total number of cores of your system to reduce the compilation time. Type "lscpu | grep 'CPU(s)'" to see the total number of cores:
    
    ```
-   CPU(s):                24
-   On-line CPU(s) list:   0-23
+   CPU(s):                16
+   On-line CPU(s) list:   0-15
    ```
 
 6. Edit "/etc/default/grub" to boot with your new kernel by default. For example:
@@ -99,7 +114,7 @@ blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. 
    ```
    ...
    #GRUB_DEFAULT=0 
-   GRUB_DEFAULT="1>Ubuntu, with Linux 5.4.43-jaehyun"
+   GRUB_DEFAULT="1>Ubuntu, with Linux 5.4.43-ali"
    ...
    ```
 
