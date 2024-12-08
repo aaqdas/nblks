@@ -31,21 +31,22 @@ The detailed instructions to reproduce all individual results presented in our O
 blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. Building the blk-switch kernel should be done on both Host and Target servers. 
 
 1. Install the required packages using the command
-```bash
+    ```bash
     sudo apt-get install bc fio libncurses-dev gawk flex bison openssl libssl-dev dkms dwarves  \
                   libelf-dev libudev-dev libpci-dev libiberty-dev autoconf sysstat iperf
-```
+    ```
 
 2. Install NVME Utility in Ubuntu 16.04
-```bash
-cd ~ 
-wget http://security.ubuntu.com/ubuntu/pool/universe/n/nvme-cli/nvme-cli_1.9-1_amd64.deb
-sudo apt install ./nvme-cli_1.9-1_amd64.deb
+    ```bash
+    cd ~ 
+    wget http://security.ubuntu.com/ubuntu/pool/universe/n/nvme-cli/nvme-cli_1.9-1_amd64.deb
+    sudo apt install ./nvme-cli_1.9-1_amd64.deb
 
-```
+    ```
 
 
-**(Don't forget to be root)**
+**(Don't forget to be root)** 
+
 3. Download Linux kernel source tree:
    ```
    sudo -s
@@ -54,7 +55,7 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    tar xzvf linux-5.4.43.tar.gz
    ```
 
-2. Download blk-switch source code and copy to the kernel source tree:
+4. Download blk-switch source code and copy to the kernel source tree:
 
    ```
    git clone https://github.com/resource-disaggregation/blk-switch.git
@@ -63,7 +64,7 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    git apply ../nblks/kernel.patch
    ```
 
-3. Update kernel configuration:
+4. Update kernel configuration:
 
    ```
    cp /boot/config-x.x.x .config
@@ -81,7 +82,7 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    ```
    Save the .config file and exit.   
 
-4. Make sure i10 and nvme-tcp modules are included in the kernel configuration:
+5. Make sure i10 and nvme-tcp modules are included in the kernel configuration:
 
    ```
    make menuconfig
@@ -93,7 +94,7 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    ```
    Press "Save" and "Exit"
 
-5. Compile and install:
+6. Compile and install:
 
    ```
    (See NOTE below for '-j24')
@@ -109,7 +110,7 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    On-line CPU(s) list:   0-15
    ```
 
-6. Edit "/etc/default/grub" to boot with your new kernel by default. For example:
+7. Edit "/etc/default/grub" to boot with your new kernel by default. For example:
 
    ```
    ...
@@ -118,16 +119,17 @@ sudo apt install ./nvme-cli_1.9-1_amd64.deb
    ...
    ```
 
-7. Update the grub configuration and reboot into the new kernel.
+8. Update the grub configuration and reboot into the new kernel.
 
    ```
    update-grub && reboot
    ```
 
-8. Do the same steps 1--7 for both Host and Target servers.
+9. Do the same steps 1--7 for both Host and Target servers.
 
-9. When systems are rebooted, check the kernel version: Type "uname -r". It should be "5.4.43-(your name)".
+10. When systems are rebooted, check the kernel version: Type "uname -r". It should be "5.4.43-(your name)".
 
+<!--
 ## 3. Setup Remote Storage Devices
 We will compare two systems in the toy-experiment section, "blk-switch" and "Linux". We implemented a part of blk-switch (multi-egress support of i10) in the nvme-tcp kernel module. Therefore, we use
 - nvme-tcp module for "blk-switch"
@@ -296,5 +298,5 @@ At Host: we run FIO to test blk-switch using the remote null-blk device (`/dev/n
          cd ~/blk-switch/scripts/
          grep IOPS output_linux_tapp output_blk-switch_tapp
          ```
-
+-->
 **To continue the artifact evaluation:** please go to "[osdi21_artifact/](https://github.com/resource-disaggregation/blk-switch/tree/master/osdi21_artifact)".
