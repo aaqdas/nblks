@@ -125,13 +125,32 @@ blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. 
    update-grub && reboot
    ```
 
-9. Do the same steps 1--8 for both Host and Target servers.
+9.  We need to define IPPROTO_VIRTUAL_SOCK for NetChannel applications. Add the two lines with sudo vi /usr/include/netinet/in.h (line 58):
+```
+   IPPROTO_VIRTUAL_SOCK = 19,      /* Virtual Socket.  */
+#define IPPROTO_VIRTUAL_SOCK     IPPROTO_VIRTUAL_SOCK
+```
+10. Inside the NetChannel Repository. Run the following
+```
+cd ~/NetChannel
+cd custom_socket/
+sudo ./compile.sh
 
-10. When systems are rebooted, check the kernel version: Type "uname -r". It should be "5.4.43-(your name)".
+# Run your applications with 
+sudo LD_PRELOAD=~/NetChannel/custom_socket/nd_socket.so ./program
 
-11. Before we begin with the artifact, please edit `~/nblks/scripts/system_env.sh` to specify Target IP address, Network Interface name associated with the Target IP address, and number of cores.
+```
+
+
+
+11. Do the same steps 1--10 for both Host and Target servers.
+
+12. When systems are rebooted, check the kernel version: Type "uname -r". It should be "5.4.43-(your name)".
+
+13. Before we begin with the artifact, please edit `~/nblks/scripts/system_env.sh` to specify Target IP address, Network Interface name associated with the Target IP address, and number of cores.
 
    You can type "lscpu | grep 'CPU(s)'" to get the number of cores of your system.  
+
 
 <!--
 ## 3. Setting Up Remote Storage Devices
