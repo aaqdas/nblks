@@ -126,20 +126,20 @@ blk-switch has been successfully tested on Ubuntu 16.04 LTS with kernel 5.4.43. 
    ```
 
 9.  We need to define IPPROTO_VIRTUAL_SOCK for NetChannel applications. Add the two lines with sudo vi /usr/include/netinet/in.h (line 58):
-```
-   IPPROTO_VIRTUAL_SOCK = 19,      /* Virtual Socket.  */
-#define IPPROTO_VIRTUAL_SOCK     IPPROTO_VIRTUAL_SOCK
-```
+   ```
+      IPPROTO_VIRTUAL_SOCK = 19,      /* Virtual Socket.  */
+   #define IPPROTO_VIRTUAL_SOCK     IPPROTO_VIRTUAL_SOCK
+   ```
 10. Inside the NetChannel Repository. Run the following
-```
-cd ~/NetChannel
-cd custom_socket/
-sudo ./compile.sh
+   ```
+   cd ~/NetChannel
+   cd custom_socket/
+   sudo ./compile.sh
 
-# Run your applications with 
-sudo LD_PRELOAD=~/NetChannel/custom_socket/nd_socket.so ./program
+   # Run your applications with 
+   sudo LD_PRELOAD=~/NetChannel/custom_socket/nd_socket.so ./program
 
-```
+   ```
 
 
 
